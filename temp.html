@@ -1,0 +1,75 @@
+from flask import Flask, request
+import cgi
+
+app = Flask(__name__)
+app.config['DEBUG'] = True
+
+
+form ="""
+<!doctype html>
+<html>
+    <body>
+        <h1>Signup</h1>
+        <form action="/signup" method="post">
+            <label for="user-name">Username</label>
+                <input id="user-name" type="text" name="user_name"/>
+                <br>
+            <label for="password">Password</label>
+                <input id="password" type="password" name="user-password"/>
+                <br>
+            <label for="verify-pswd">Verify Password</label>
+                <input id="verify-pswd" type="password" name="user-password"/>
+                <br>
+            <label for="email">Email(optional)</label>
+                <input id="email" type="text" name="user-email" />
+                <br>
+            <input type="submit" value="Submit"/>
+        
+        valid_form = """
+        <style>
+                .error {{ color: red }}
+            </style>
+            <h1>Signup</h1>
+            <form action="/signup" method="post">
+                <label for="user-name">Username
+                    <input id="user-name" type="text" name="user_name"/>
+                </label>
+                <p class="error">{name_error}</p>
+                    <br>
+                <label for="password">Password
+                    <input id="password" type="password" name="user-password"/>
+                </label>
+                    <br>
+                <p class="error">{pswd_error}</p>
+                <label for="verify-pswd">Verify Password
+                    <input id="verify-pswd" type="password" name="user-password"/>
+                </label>
+                <p class="error">{pswd_error}</p>
+                    <br>
+                <label for="email">Email(optional)
+                    <input id="email" type="text" name="user-email"/>
+                    </label>
+                <p class="error">{email_error}</p>
+                    <br>
+                <input type="submit" value="Submit"/>
+            
+        </form>
+    </body>
+</html>
+"""
+
+
+@app.route("/")
+def index():
+    return form
+
+@app.route("/signup", methods=['POST'])
+def signup():
+    #user_name = request.form['user_name']
+    #return "<h1>Welcome " + user_name + "!</h1>"
+    resp = ""
+    for field in request.form.keys():
+        resp += "<b>{key}</b>: {value}<br>".format(key=field, value=request.form[field])
+    return resp
+
+app.run()
