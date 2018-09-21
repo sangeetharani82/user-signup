@@ -1,11 +1,6 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import cgi
 import os
-import jinja2
-
-template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
-
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -13,10 +8,7 @@ app.config['DEBUG'] = True
 
 @app.route('/validate-data')
 def display_data_form():
-    template = jinja_env.get_template('data_form.html')
-    return template.render(username='', name_error='', 
-    userpswd='', pswd_error='', verifypswd='', v_pswd_error='', 
-    useremail='', email_error='')
+    return render_template('data_form.html')
 
 
 @app.route('/validate-data', methods=['POST'])
@@ -54,15 +46,14 @@ def validate_data():
                 useremail = ''
 
     if not name_error and not pswd_error and not v_pswd_error and not email_error:
-        template= jinja_env.get_template('welcome_msg.html')
-        return template.render(username=username)
+        return render_template('welcome_msg.html', username=username)
     else:
-        return data_form.format(name_error=name_error, 
+        return render_template('data_form.html', name_error=name_error, 
         pswd_error=pswd_error, v_pswd_error=v_pswd_error, email_error=email_error, username=username,
         userpswd=userpswd, verifypswd=verifypswd, useremail=useremail)
 
 @app.route("/")
 def index():
-    return form
+    return render_template('index.html')
 
 app.run()
