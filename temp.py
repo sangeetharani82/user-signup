@@ -1,20 +1,40 @@
 from flask import Flask, request
 import cgi
-import os
-import jinja2
-
-template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
-
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
 
+data_form = """
+    <style>
+        .error {{ color: red;}}
+    </style>
+    <h1>Signup</h1>
+    <form method='POST'>
+        <label>Username
+            <input name="username" type="text" value='{username}' />
+        </label>
+        <p class="error">{name_error}</p>
+        <label>Password
+            <input name="userpswd" type="password" value='{userpswd}'/>
+        </label>
+        <p class="error">{pswd_error}</p>
+        <label>Verify Password
+            <input name="verifypswd" type="password" value='{verifypswd}' />
+        </label>
+        <p class="error">{v_pswd_error}</p>
+        <label>Email(optional)
+            <input name="useremail" type="text" value='{useremail}' />
+        </label>
+        <p class="error">{email_error}</p>
+        <input type="submit" value="Submit" />
+    </form>
+
+"""
+
 @app.route('/validate-data')
 def display_data_form():
-    template = jinja_env.get_template('data_form.html')
-    return template.render(username='', name_error='', 
+    return data_form.format(username='', name_error='', 
     userpswd='', pswd_error='', verifypswd='', v_pswd_error='', 
     useremail='', email_error='')
 
@@ -44,7 +64,6 @@ def validate_data():
         v_pswd_error = "Passwords don't match"
         verifypswd = ''
 
-    
     if useremail == '':
         useremail = ''
     else:
@@ -54,8 +73,7 @@ def validate_data():
                 useremail = ''
 
     if not name_error and not pswd_error and not v_pswd_error and not email_error:
-        template= jinja_env.get_template('welcome_msg.html')
-        return template.render(username=username)
+        return "<h1>Welcome " + username + "!</h1>"
     else:
         return data_form.format(name_error=name_error, 
         pswd_error=pswd_error, v_pswd_error=v_pswd_error, email_error=email_error, username=username,
