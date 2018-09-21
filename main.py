@@ -5,11 +5,9 @@ import os
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
-
 @app.route('/validate-data')
-def display_data_form():
+def index():
     return render_template('data_form.html')
-
 
 @app.route('/validate-data', methods=['POST'])
 def validate_data():
@@ -31,12 +29,11 @@ def validate_data():
     if len(userpswd) < 3 or len(username) > 20 or not userpswd.isalpha():
         pswd_error = "That's not a valid password"
         userpswd = ''
-        
-    if len(verifypswd) < 3 or len(verifypswd) > 20 or not verifypswd.isalpha() or userpswd != verifypswd:
-        v_pswd_error = "Passwords don't match"
-        verifypswd = ''
+    else:
+        if userpswd != verifypswd:
+            v_pswd_error = "Passwords don't match"
+    verifypswd = ''
 
-    
     if useremail == '':
         useremail = ''
     else:
@@ -52,8 +49,5 @@ def validate_data():
         pswd_error=pswd_error, v_pswd_error=v_pswd_error, email_error=email_error, username=username,
         userpswd=userpswd, verifypswd=verifypswd, useremail=useremail)
 
-@app.route("/")
-def index():
-    return render_template('index.html')
 
-app.run()
+app.run()   

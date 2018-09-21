@@ -1,24 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Signup</h1>
+    <h1 style="font-size:30px">Signup</h1>
     <form method='POST'>
-    <label>Username
-        <input name="username" type="text" value='{{username}}' />
-    </label>
-    <p class="error">{{name_error}}</p>
-    <label>Password
-        <input name="userpswd" type="password" value='{{userpswd}}'/>
-    </label>
-    <p class="error">{{pswd_error}}</p>
-    <label>Verify Password
-        <input name="verifypswd" type="password" value='{{verifypswd}}' />
-    </label>
-    <p class="error">{{v_pswd_error}}</p>
-    <label>Email(optional)
-        <input name="useremail" type="text" value='{{useremail}}' />
-    </label>
-    <p class="error">{{email_error}}</p>
-    <input type="submit" value="Submit" />
+    <label style="font-size:15px;">Username<input style="font-size:10px;" name="username" type="text" value='{{username}}' />
+        <span class="error">{{name_error}}</span></label><br>
+    <label style="font-size:15px;">Password<input style="font-size:10px;" name="userpswd" type="password" value='{{userpswd}}'/>
+        <span class="error">{{pswd_error}}</span></label><br>
+    <label style="font-size:15px;">Verify Password<input style="font-size:10px;" name="verifypswd" type="password" value='{{verifypswd}}' />
+        <span class="error">{{v_pswd_error}}</span></label><br>
+    <label style="font-size:15px;">Email(optional)<input style="font-size:10px;" name="useremail" type="text" value='{{useremail}}' />
+        <span class="error">{{email_error}}</span></label><br><br>
+    <input type="submit" value="Submit Query" />
     </form>
 {% endblock %}
